@@ -1,3 +1,12 @@
+function(generateHeader headerName)
+    find_program(PYTHON python3 REQUIRED)
+    execute_process(COMMAND ${PYTHON}
+        ${CMAKE_CURRENT_SOURCE_DIR}/genQwlroots.py
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        -r
+        -o ${headerName})
+endfunction()
+
 set(TARGET qwlroots)
 set(CMAKE_NAME ${CMAKE_PROJECT_NAME})
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -70,7 +79,12 @@ if (USE_WLROOTS_19)
     ws_generate(server wayland-protocols staging/ext-image-capture-source/ext-image-capture-source-v1.xml ext-image-capture-source-v1-protocol)
 endif()
 
+set(QWLROOTS_HEADER qwlroots.h)
+
+generateHeader("${CMAKE_CURRENT_SOURCE_DIR}/${QWLROOTS_HEADER}")
+
 set(HEADERS
+    ${QWLROOTS_HEADER}
     qwglobal.h
     qwobject.h
     qwbackend.h
@@ -162,7 +176,7 @@ set(HEADERS
 )
 
 if (USE_WLROOTS_19)  # 0.19
-    list(APPEND HEADERS 
+    list(APPEND HEADERS
         types/qwcolormanagerv1.h
         types/qwextimagecopycapturev1.h
         types/qwextforeigntoplevellistv1.h
