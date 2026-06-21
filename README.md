@@ -139,22 +139,6 @@ The script works by:
 
 The tool automatically handles naming conventions (e.g., `wlr_compositor.h` ↔ `qwcompositor.h`) and outputs coverage statistics for each category (types, util, render, interfaces).
 
-## Documentation for AI Assistants
-
-The `doc/ai/` directory contains specialized documentation designed for AI assistants to understand and work with the qwlroots codebase:
-
-- **[qwlroots-wrapping-patterns-best-practices-en.md](./doc/ai/qwlroots-wrapping-patterns-best-practices-en.md)**: Comprehensive English guide covering all four wrapping patterns (QW_CLASS_OBJECT, QW_CLASS_REINTERPRET_CAST, QW_CLASS_BOX, QW_CLASS_INTERFACE) with detailed examples and step-by-step instructions for adding new wrappers.
-- **[qwlroots-wrapping-patterns-best-practices.md](./doc/ai/qwlroots-wrapping-patterns-best-practices.md)**: Chinese version of the wrapping patterns guide with the same comprehensive coverage.
-
-These documents serve as reference materials for AI assistants when:
-
-- Adding new wlroots type wrappers
-- Understanding the project's architecture and design patterns
-- Following consistent coding practices and naming conventions
-- Implementing proper version compatibility handling
-
-The AI documentation includes complete workflows, from updating the wlroots submodule to implementing and testing new wrappers, ensuring consistency and maintainability across the codebase.
-
 ## General Requirements
 
 ### When Wrapping a New wlroots Type
