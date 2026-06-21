@@ -13,7 +13,7 @@ endif()
 
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Gui REQUIRED)
 
-set(SOURCES main.cpp)
+set(SOURCES tinywl.cpp tinywl.h)
 
 add_executable(${TARGET}
     ${SOURCES}
