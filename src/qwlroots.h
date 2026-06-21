@@ -40,7 +40,6 @@
 #include "types/qwextimagecopycapturev1.h"
 #include "types/qwforeigntoplevelhandlev1.h"
 #include "types/qwfractionalscalemanagerv1.h"
-#include "types/qwfullscreenshellv1.h"
 #include "types/qwgammacontorlv1.h"
 #include "types/qwidleinhibitv1.h"
 #include "types/qwidlenotifyv1.h"

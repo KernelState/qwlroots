@@ -25,7 +25,12 @@ class QW_CLASS_REINTERPRET_CAST(linux_drm_syncobj_surface_v1_state)
 {
 public:
 #if WLR_VERSION_MINOR >= 19
-    QW_FUNC_MEMBER(linux_drm_syncobj_surface_v1_state, signal_release_with_buffer, bool, wlr_buffer *buffer);
+    template<typename ...Args>
+    QW_ALWAYS_INLINE bool
+    signal_release_with_buffer(Args &&... args) const requires std::is_invocable_v<decltype(wlr_linux_drm_syncobj_v1_state_signal_release_with_buffer), decltype(*this), Args...>
+    {
+        return wlr_linux_drm_syncobj_v1_state_signal_release_with_buffer(*this, std::forward<Args>(args)...);
+    }
 #endif
 };
 

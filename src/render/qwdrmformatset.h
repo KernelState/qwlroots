@@ -21,16 +21,20 @@ class QW_CLASS_REINTERPRET_CAST(drm_format_set)
 {
 public:
     QW_FUNC_MEMBER(drm_format_set, finish, void)
-    QW_FUNC_MEMBER(drm_format_set, get, const drm_format_set *, uint32_t format)
+    QW_FUNC_MEMBER(drm_format_set, get, const wlr_drm_format_set *, uint32_t format)
 #if WLR_VERSION_MINOR >= 19
     QW_FUNC_MEMBER(drm_format_set, remove, bool, uint32_t format, uint64_t modifier)
 #endif
     QW_FUNC_MEMBER(drm_format_set, has, bool, uint32_t format, uint64_t modifier)
     QW_FUNC_MEMBER(drm_format_set, add, bool, uint32_t format, uint64_t modifier)
 
-    QW_FUNC_MEMBER(drm_format_set, intersect, bool, const drm_format_set *a, const drm_format_set *b)
-    QW_FUNC_STATIC(drm_format_set, union, bool, drm_format_set *dst, 
-        const drm_format_set *a, const drm_format_set *b)
+    QW_FUNC_MEMBER(drm_format_set, intersect, bool, const wlr_drm_format_set *a, const wlr_drm_format_set *b)
+    template<typename ...Args>
+    QW_ALWAYS_INLINE static bool
+    set_union(Args &&... args) requires std::is_invocable_v<decltype(wlr_drm_format_set_union), Args...>
+    {
+        return wlr_drm_format_set_union(std::forward<Args>(args)...);
+    }
 };
 
 QW_END_NAMESPACE
