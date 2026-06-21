@@ -16,7 +16,7 @@ import re
 import sys
 from pathlib import Path
 
-NAME = r"qw_[a-zA-Z0-9_]+"
+NAME = r"qw_[a-zA-Z0-9_]+(?![a-zA-Z0-9_#])"
 EXPORT = r"(?:[A-Z_][A-Z0-9_]*\s+)?"          # optional ALL_CAPS export macro
 KEYWORD = r"(?:class|enum(?:\s+class)?)"
 
@@ -27,9 +27,22 @@ TEMPLATE_RE = re.compile(
     re.MULTILINE,
 )
 
+# macro: class|enum|enum class MACRO_NAME(arg), at start of its own line
+MACRO_RE = re.compile(
+    rf"^[ \t]*{KEYWORD}\s+"
+    rf"([A-Z_][A-Z0-9_]*)\(([a-zA-Z_][a-zA-Z0-9_]*)\)",
+    re.MULTILINE,
+)
+
 # plain: class|enum [EXPORT_MACRO] qw_name, at start of its own line
 PLAIN_RE = re.compile(
     rf"^[ \t]*{KEYWORD}\s+{EXPORT}(?P<name>{NAME})",
+    re.MULTILINE,
+)
+
+# struct or union at column 0 only (avoids matching nested types)
+STRUCT_UNION_RE = re.compile(
+    rf"^(?:struct|union)\s+{EXPORT}(?P<name>{NAME})",
     re.MULTILINE,
 )
 
@@ -87,6 +100,16 @@ def collect(text: str):
         if any(cs <= start < ce for cs, ce in covered):
             continue  # already handled as a template above
         entries.setdefault(m.group("name"), None)
+
+    for m in MACRO_RE.finditer(text):
+        name = "qw_" + m.group(2)
+        if name not in entries:
+            entries[name] = None
+
+    for m in STRUCT_UNION_RE.finditer(text):
+        name = m.group("name")
+        if name not in entries:
+            entries[name] = None
 
     return entries
 
