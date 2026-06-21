@@ -300,8 +300,15 @@ install(TARGETS ${TARGET}
     LIBRARY
         DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER
-        COMPONENT Development
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${TARGET}
+)
+
+# Also install headers preserving subdirectory structure, which PUBLIC_HEADER
+# does not do.  genQwlroots.py generates qwlroots.h with relative includes
+# such as "interfaces/...", "types/..." etc.
+install(DIRECTORY interfaces types render util
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${TARGET}
+    FILES_MATCHING PATTERN "*.h"
 )
 
 include(${PROJECT_SOURCE_DIR}/cmake/Helpers.cmake)
